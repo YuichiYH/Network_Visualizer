@@ -1,4 +1,3 @@
-
 name: Python Tests
 
 on:
@@ -27,9 +26,24 @@ jobs:
   docker:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set image name
+        run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
       - name: Build Docker image
-        run: docker build -t network-visualizer:ci .
+        run: docker build -t "$IMAGE_NAME:latest" .
+
+      - name: Push Docker image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: docker push "$IMAGE_NAME:latest"
