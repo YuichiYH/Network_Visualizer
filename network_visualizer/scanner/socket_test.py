@@ -13,7 +13,9 @@ def scan_port(ip, port: int):
             "port": port
         }
     
-    if not isinstance(port, int):
+    try:
+        port = int(port)
+    except ValueError:
         return {
             "status": "error",
             "message": "Port number must be an integer.",

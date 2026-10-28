@@ -1,6 +1,8 @@
+from urllib import response
+
 import pytest
 import socket
-from app import app
+from network_visualizer.app import app
 
 @pytest.fixture
 def client():
@@ -57,9 +59,9 @@ def test_scan_invalid_ip(client):
     
 def test_scan_invalid_port(client):
     ip = "127.0.0.1"
-    port = 70000
+    port = "123a"
     
     response = client.get(f'/scan/{ip}/{port}')
     assert response.status_code == 400
     assert response.json["status"] == "error"
-    assert response.json["message"] == "Port number must be between 1 and 65535."
+    assert response.json["message"] == "Port number must be an integer."

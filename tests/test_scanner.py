@@ -1,6 +1,6 @@
 import pytest
 import socket
-from socket_test import scan_port
+from network_visualizer.scanner.socket_test import scan_port
 
 def test_scan_port_rejects_invalid_ip():
     ip = "999.1.1.1"
