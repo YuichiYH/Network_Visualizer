@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["python", "-m", "flask", "--app", "network_visualizer.app", "run", "--host=0.0.0.0", "--port=5000"]
+CMD ["python", "-m", "flask", "--app", "network_visualizer.app:create_app", "run", "--host=0.0.0.0", "--port=5000"]
